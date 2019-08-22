@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
+    <script src="spartan.js"></script>
+    <script src="index.js"></script>
+    <title>spartan</title>
+</head>
+<style>
+    html{
+        background: #000;
+        font-family: "微軟正黑體"
+    }
+    .gameOver {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        text-align: center;
+        transform: translate(-50%,-50%);
+        display: none;
+    }
+    .gameOver p {
+        font-size: 30px;
+        font-weight: bold;
+        color:#fff;
+        margin: 4% 0;
+    }
+    .gameOver button {
+        display: inline-block;
+        font-size: 20px;
+        border-radius: 5px;
+        border: 0;
+        padding: 2% 5%;
+        outline: none;
+        cursor: pointer;
+    }
+    .gameStartBtn {
+        position: absolute;
+        top: 60%;
+        left: 62%;
+        font-size: 30px;
+        border-radius: 10px;
+        border: 0;
+        padding: 2%;
+        outline: none;
+        cursor: pointer;
+        background: #251F1C;
+        color: #fff;
+        transition: 0.5s;
+        cursor: pointer;
+    }
+    .gameStartBtn:hover {
+        color: #251F1C;
+        background: #fff;
+    }
+    .userLife {
+        position: absolute;
+        display: block;
+        opacity: 0;
+        transition: 0.6s;
+        z-index: 99;
+        left: 2%;
+        top: 3%;
+        font-size: 20px;
+        color: #fff;
+        background-color: #000;
+        padding: 1% 2%;
+        pointer-events: none;
+    }
+    .killMonster {
+        position: absolute;
+        display: block;
+        opacity: 0;
+        transition: 0.6s;
+        z-index: 99;
+        right: 2%;
+        top: 3%;
+        font-size: 20px;
+        color: #fff;
+        background-color: #000;
+        padding: 1% 2%;
+        pointer-events: none;
+    }
+    .powerLine {
+        position: absolute;
+        display: block;
+        opacity: 0;
+        transition: 0.6s;
+        z-index: 99;
+        bottom: 12%;
+        left: 2%;
+        background: #251F1C;
+        border-radius: 50px;
+        padding: 8px;
+        margin: 0;
+        font-size: 0;
+        pointer-events: none;
+    }
+    .powerLine span {
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 14px;
+        color: #fff;
+        margin: 0 6px;
+    }
+    .powerLine li {
+        display: inline-block;
+        vertical-align: middle;
+        padding: 10px 20px;
+        margin: 0 2px;
+        background: #7c7c7c;
+        border-radius: 50px;
+    }
+    .kill-1 .li1{
+        background: yellow;
+        transition:0.5s;
+    }
+    .kill-2 .li1{
+        background: yellow;
+        transition:0.5s;
+    }
+    .kill-2 .li2{
+        background: yellow;
+        transition:0.5s;
+    }
+    .kill-3 .li1{
+        background: yellow;
+        transition:0.5s;
+    }
+    .kill-3 .li2{
+        background: yellow;
+        transition:0.5s;
+    }
+    .kill-3 .li3{
+        background: yellow;
+        transition:0.5s;
+    }
+    .kill-4 .li1{
+        background: yellow;
+        transition:0.5s;
+    }
+    .kill-4 .li2{
+        background: yellow;
+        transition:0.5s;
+    }
+    .kill-4 .li3{
+        background: yellow;
+        transition:0.5s;
+    }
+    .kill-4 .li4{
+        background: yellow;
+        transition:0.5s;
+    }
+    .kill-5 .li1{
+        background: yellow;
+        transition:0.5s;
+        animation: flash 1s infinite;
+    }
+    .kill-5 .li2{
+        background: yellow;
+        transition:0.5s;
+        animation: flash 1s infinite;
+    }
+    .kill-5 .li3{
+        background: yellow;
+        transition:0.5s;
+        animation: flash 1s infinite;
+    }
+    .kill-5 .li4{
+        background: yellow;
+        transition:0.5s;
+        animation: flash 1s infinite;
+    }
+    .kill-5 .li5{
+        background: yellow;
+        transition:0.5s;
+        animation: flash 1s infinite;
+    }
+    @keyframes flash {
+        0% {background:yellow;} 
+        50% {background:rgb(255, 136, 0);} 
+        100% {background:yellow;} 
+    }
+    .kill-power {
+        background: rgb(255, 136, 0);
+        animation: flash-power 0.5s infinite;
+    }
+    .kill-power li {
+        background: yellow;
+        animation: flash-power2 0.5s infinite;
+    }
+    @keyframes flash-power { 
+        0% {background:rgb(255, 136, 0);} 
+        50% {background:yellow;} 
+        100% {background:rgb(255, 136, 0);} 
+    }
+    @keyframes flash-power2 { 
+        0% {background:yellow;} 
+        50% {background:rgb(255, 136, 0);} 
+        100% {background:yellow;}  
+    }
+    .logo{
+        position: absolute;
+        width: 30%;
+        padding-bottom: 34%;
+        z-index: 99;
+        right: 9.5%;
+        top: 12%;
+        z-index: 99;
+        background: url(images/spartanlogo.png)no-repeat;
+        background-size: 100%;
+        transition: 0.5s;
+    }
+    .guideBtn {
+        position: absolute;
+        z-index: 99;
+        font-size: 16px;
+        color: #fff;
+        background: rgb(58, 58, 58);
+        display: block;
+        border-radius: 5px;
+        border: 0;
+        padding: 1% 2%;
+        right: 17%;
+        bottom: 20%;
+        cursor: pointer;
+        outline: 0;
+    }
+    .gameRules {
+        position: absolute;
+        z-index: 999;
+        width: 100%;
+        height: 100%;
+        background:rgba(255, 141, 0, 0.7);
+        top: 0;
+        left: 0;
+        display: none;
+    }
+    .gameRules::before{
+        content: '';
+        position: absolute;
+        display: block;
+        width: 50%;
+        padding-bottom: 30%;
+        background: url(images/rules.png)no-repeat;
+        background-size: 100%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+    }
+    .gameRules .close {
+        position: absolute;
+        right: 5%;
+        top: 5%;
+        font-size: 25px;
+        border-radius: 10px;
+        background: rgb(255, 255, 255);
+        color: #000;
+        font-weight: bold;
+        padding: 2px 10px;
+        cursor: pointer;
+        transition: 0.5s;
+    }
+    .gameRules .close:hover {
+        background: #000;
+        color: #fff;
+    }
+    .youwin {
+        position: absolute;
+        z-index: 1;
+        display: none;
+        top: 30%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        text-align: center;
+    }
+    @keyframes fontFlash {
+        0%{ color: #251F1C; text-shadow: 0 0 5px transparent;}
+        50%{ color: rgb(255, 255, 255); text-shadow: 0 0 5px #fff;}
+        100%{ color: #251F1C; text-shadow: 0 0 5px transparent;}
+    }
+    .youwin p{
+        font-size: 40px;
+        font-weight: bold;
+        color: #251F1C;
+        user-select: none;
+        text-shadow: 0 0 5px transparent;
+    }
+    .youwin .active{
+        animation: fontFlash 3s infinite
+    }
+</style>
+<body>
+    <div id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:100% ;display: block;position:relative;margin :3% auto;">
+		<canvas id="canvas" width="800" height="600" style="display: block; background-color:rgba(255, 255, 255, 1.00);"></canvas>
+		<div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:800px; height:600px; position: absolute; left: 0px; top: 0px; display: block;">
+        </div>
+        <div id="gameOver" class="gameOver">
+            <p>Game Over</p>
+            <button id="gameOverbtn">restart</button>
+        </div>
+        <button id="gameStartBtn" class="gameStartBtn">GAME START</button>
+        <div id="userLifeFrame" class="userLife">USER LIFE: <span id="userLife"></span></div>
+        <div id="killMonsterFrame" class="killMonster">KILL MONSTER: <span id="killMonster"></span></div>
+        <ul id="powerLineFrame" class="powerLine"><span>POWER</span><li class="li1"></li><li class="li2"></li><li class="li3"></li><li class="li4"></li><li class="li5"></li></ul>
+        <div id="spartanlogo" class="logo"></div>
+        <button id="guideBtn" class="guideBtn">How to play?</button>
+        <div id="gameRules" class="gameRules"><div id="rulesClose" class="close">CLOSE</div></div>
+        <div id="youwin" class="youwin">
+            <p id="winFont">YOU WIN!! CONGRATULATIONS</p>
+        </div>
+    </div>
+</body>
+</html>
